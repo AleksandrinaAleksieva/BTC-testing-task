@@ -28,7 +28,7 @@ class Helpers {
         }
     }
 
-    async generateScreenshotName() {
+    generateScreenshotName() {
         const timestamp = Date.now();
         const randomSuffix = Math.random().toString(36).substring(2, 8);
         return `screenshot_${timestamp}_${randomSuffix}.png`;
