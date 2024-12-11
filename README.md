@@ -13,7 +13,10 @@ This project is designed to validate the BTC-USD price from the Google Finance p
 ## Project Structure
 
 The project's structure is as follows:
-
+```
+├── .github/ # github configs
+│ └── workflows # Defined workflows
+│  └── test.yml # Defined steps for execution within the CI
 ├── .vscode/ # VSCode settings for debugging 
 │ └── launch.js # Debugging configuration for Cucumber tests 
 ├── drivers/ 
@@ -35,6 +38,7 @@ The project's structure is as follows:
 ├── package.json # Project dependencies and scripts 
 ├── setupChai.js # Exporting except for better accessibility within the project
 └── utils.js # Utility functions 
+```
 
 ### Setting up `.env` file
 
