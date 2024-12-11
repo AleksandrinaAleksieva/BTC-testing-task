@@ -59,11 +59,12 @@ jobs:
         sudo apt --fix-broken install
 
     - name: Set up virtual display (Xvfb) and Run tests
+      env:
+        API_ENDPOINT: ${{ secrets.API_ENDPOINT }}  # Inject API_ENDPOINT secret as an environment variable
       run: |
         sudo apt-get install -y xvfb
         xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npm run test
-      env:
-        API_ENDPOINT: ${{ secrets.API_ENDPOINT }}  # Inject API_ENDPOINT secret as an environment variable
+
 
     - name: Upload test artifacts (screenshots, reports)
       if: failure()  # Upload artifacts only when the tests fail
