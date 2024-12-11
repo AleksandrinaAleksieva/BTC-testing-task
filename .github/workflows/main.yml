@@ -47,16 +47,15 @@ jobs:
           libappindicator3-1 \
           libsecret-1-0 \
           fonts-liberation \
-          libappindicator3-1 \
-          libnspr4 \
-          xvfb
+          libnspr4
         # Install Google Chrome
         curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o google-chrome-stable_current_amd64.deb
-        sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt --fix-broken install
+        sudo dpkg -i google-chrome-stable_current_amd64.deb
+        sudo apt --fix-broken install
 
-    - name: Run tests in virtual display
+    - name: Run tests
       run: |
-        xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npm run test
+        npm run test
 
     - name: Upload test artifacts (screenshots, reports)
       uses: actions/upload-artifact@v3
