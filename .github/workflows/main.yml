@@ -54,20 +54,6 @@ jobs:
         sudo dpkg -i google-chrome-stable_current_amd64.deb
         sudo apt --fix-broken install
 
-    - name: Install Allure Commandline
-      run: |
-        # Install Allure Commandline
-        curl -o allure.tgz https://github.com/allure-framework/allure2/releases/download/2.18.1/allure-2.18.1.tgz
-        tar -xvzf allure.tgz -C allure
-        sudo mv allure /opt/allure
-        sudo ln -s /opt/allure/bin/allure /usr/local/bin/allure
-        allure --version  # Verify allure installation
-
     - name: Run tests
       run: |
         npm run test
-
-    - name: Generate Allure Report
-      run: |
-        allure generate allure-results --clean -o allure-report
-        allure open allure-report
