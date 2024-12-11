@@ -28,6 +28,12 @@ class Helpers {
         }
     }
 
+    async generateScreenshotName() {
+        const timestamp = Date.now();
+        const randomSuffix = Math.random().toString(36).substring(2, 8);
+        return `screenshot_${timestamp}_${randomSuffix}.png`;
+    }
+
     async extractUIPrice(driver) {
         const priceText = await this.financePage.getPriceText(driver);
         return await parseUiPrice(priceText);

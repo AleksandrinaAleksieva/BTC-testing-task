@@ -25,9 +25,10 @@ const disbleShm = 'disable-dev-shm-usage';
 const remoteDebugging = 'remote-debugging-port=9222';
 const disableGpu = '--disable-gpu';
 const windowSize = '--window-size=1920,1080';
-const logging =`--enable-logging', '--v=1`;
+const logging = `--enable-logging', '--v=1`;
 const automationControlled = '--disable-blink-features=AutomationControlled';
-
+const screenshots = 'screenshots';
+const fileType = 'base64';
 
 //Variables
 let driver;
@@ -40,7 +41,7 @@ let initialPrice;
 let recordedPrices = [];
 
 chromeOptions = new chrome.Options()
-.addArguments(headless)
+    .addArguments(headless)
     .addArguments(disableGpu)
     .addArguments(noSandbox)
     .addArguments(disbleShm)
@@ -49,18 +50,18 @@ chromeOptions = new chrome.Options()
     .addArguments(remoteDebugging)
     .addArguments(automationControlled);
 
+//Helper function for debugging
 async function takeScreenshot(driver, fileName) {
-    // Ensure the screenshots directory exists
-    const screenshotDir = path.join(__dirname, 'features', 'step_definitions', 'screenshots');
+    const screenshotDir = path.join(__dirname, screenshots);
     if (!fs.existsSync(screenshotDir)) {
-      fs.mkdirSync(screenshotDir, { recursive: true });
+        fs.mkdirSync(screenshotDir, { recursive: true });
     }
-  
+
     const screenshot = await driver.takeScreenshot();
-    const screenshotPath = path.join(screenshotDir, fileName);
-    fs.writeFileSync(screenshotPath, screenshot, 'base64');
+    const screenshotPath = path.join(screenshotDir, helpers.generateScreenshotName());
+    fs.writeFileSync(screenshotPath, screenshot, fileType);
     console.log(`Screenshot saved to ${screenshotPath}`);
-  }
+}
 
 BeforeAll(async () => {
     // Initialize driver only if it's not already initialized
@@ -79,9 +80,9 @@ BeforeAll(async () => {
 
     // Handle the cookies prompt
     console.log('Handling cookies prompt');
-    await takeScreenshot(driver, 'before_cookies.png');
+    await takeScreenshot(driver);
     await helpers.handleCookiesPrompt(driver);
-    await takeScreenshot(driver, 'after_cookies.png');
+    await takeScreenshot(driver);
 });
 
 //Verify API price format
