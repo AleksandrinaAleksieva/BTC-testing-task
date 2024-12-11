@@ -51,7 +51,7 @@ chromeOptions = new chrome.Options()
     .addArguments(automationControlled);
 
 //Helper function for debugging
-async function takeScreenshot(driver, fileName) {
+async function takeScreenshot(driver) {
     const screenshotDir = path.join(__dirname, screenshots);
     if (!fs.existsSync(screenshotDir)) {
         fs.mkdirSync(screenshotDir, { recursive: true });
