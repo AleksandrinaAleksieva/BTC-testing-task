@@ -41,7 +41,7 @@ chromeOptions.addArguments(
   remoteDebugging
 );*/
 
-chromeOptions = new chrome.Options().headless().addArguments('--disable-gpu')
+chromeOptions = new chrome.Options().addArguments('--headless').addArguments('--disable-gpu')
 .addArguments('--no-sandbox')
 .addArguments('--disable-dev-shm-usage')
 .addArguments('--window-size=1920,1080');
