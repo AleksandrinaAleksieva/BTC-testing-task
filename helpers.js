@@ -12,8 +12,6 @@ class Helpers {
         const initialPageUrl = await driver.getCurrentUrl();
         const consentURL = 'https://consent.google.com';
 
-        await driver.wait(async () => (await driver.getCurrentUrl()).includes(consentURL), 10000);
-
         if (await initialPageUrl.includes(consentURL)) {
             // Check for the "Accept All" cookies button
             const consentButton = await driver.findElement(this.financePage.acceptAllButton, 15000);
