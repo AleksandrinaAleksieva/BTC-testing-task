@@ -115,6 +115,12 @@ launch.json (VSCode Debug Configuration)
 ```
 This configuration allows you to debug the Cucumber tests directly from VSCode.
 
+```
+Node: The project is configured in headless mode, if you would like to launch a browser you should remove
+.setChromeOptions(chromeOptions)
+from BeforeAll
+```
+
 ## Troubleshooting
 Missing .env file: If the .env file is missing, make sure to create it as per the instructions above.
 API Key Errors: Double-check that the API key is correctly set in the .env file.

@@ -1,6 +1,7 @@
 const { Given, When, Then, Before, BeforeAll, AfterAll } = require('@cucumber/cucumber');
 const { setDefaultTimeout } = require('@cucumber/cucumber');
 const { Builder } = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
 const utils = require('../../utils');
 const FinancePage = require('../pages/finance.btc.page');
 const Helpers = require('../../helpers');
@@ -21,15 +22,24 @@ const Number = 'number';
 let driver;
 let financePage;
 let helpers;
+let chromeOptions;
 let apiPrice;
 let uiPrice;
 let initialPrice;
 let recordedPrices = [];
 
+chromeOptions = new chrome.Options();
+chromeOptions.addArguments(
+  'headless',
+  'no-sandbox',
+  'disable-dev-shm-usage',
+  'remote-debugging-port=9222'
+);
+
 BeforeAll(async () => {
     // Initialize driver only if it's not already initialized
     if (!driver) {
-        driver = await new Builder().forBrowser(Chrome).build();
+        driver = await new Builder().forBrowser(Chrome).setChromeOptions(chromeOptions).build();
         financePage = new FinancePage(driver);
         helpers = new Helpers(driver);
     }
@@ -89,7 +99,7 @@ Then(
         }
 
         console.log(`Recorded prices: ${recordedPrices}`);
-        
+
         // Calculate average price
         const sumPrices = recordedPrices.reduce((sum, price) => sum + price, 0);
         const averagePrice = sumPrices / recordedPrices.length;
