@@ -76,13 +76,7 @@ BeforeAll(async () => {
 
     // Handle the cookies prompt
     console.log('Handling cookies prompt');
-    await driver.takeScreenshot().then((data) => {
-        require('fs').writeFileSync('before-cookies-prompt.png', data, 'base64');
-    });
     await helpers.handleCookiesPrompt(driver);
-    await driver.takeScreenshot().then((data) => {
-        require('fs').writeFileSync('after-cookies-prompt.png', data, 'base64');
-    });
 });
 
 //Verify API price format
