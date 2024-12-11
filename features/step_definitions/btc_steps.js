@@ -1,4 +1,4 @@
-const { Given, When, Then, Before, BeforeAll, AfterAll } = require('@cucumber/cucumber');
+const { Given, When, Then, BeforeAll, AfterAll } = require('@cucumber/cucumber');
 const { setDefaultTimeout } = require('@cucumber/cucumber');
 const { Builder } = require('selenium-webdriver');
 const fs = require('fs');
@@ -23,6 +23,11 @@ const headless = 'headless';
 const noSandbox = 'no-sandbox';
 const disbleShm = 'disable-dev-shm-usage';
 const remoteDebugging = 'remote-debugging-port=9222';
+const disableGpu = '--disable-gpu';
+const windowSize = '--window-size=1920,1080';
+const logging =`--enable-logging', '--v=1`;
+const automationControlled = '--disable-blink-features=AutomationControlled';
+
 
 //Variables
 let driver;
@@ -34,38 +39,22 @@ let uiPrice;
 let initialPrice;
 let recordedPrices = [];
 
+chromeOptions = new chrome.Options()
+.addArguments(headless)
+    .addArguments(disableGpu)
+    .addArguments(noSandbox)
+    .addArguments(disbleShm)
+    .addArguments(windowSize)
+    .addArguments(logging)
+    .addArguments(remoteDebugging)
+    .addArguments(automationControlled);
+
 async function takeScreenshot(driver, fileName) {
     const screenshot = await driver.takeScreenshot();
     const screenshotPath = path.join(__dirname, 'screenshots', fileName);
     fs.writeFileSync(screenshotPath, screenshot, 'base64');
     console.log(`Screenshot saved to ${screenshotPath}`);
 }
-/*
-chromeOptions = new chrome.Options();
-chromeOptions.addArguments(
-  headless,
-  noSandbox,
-  disbleShm,
-  remoteDebugging
-);*/
-/*
- chromeOptions = new chrome.Options()
-  .addArguments('--headless')
-  .addArguments('--disable-gpu')
-  .addArguments('--no-sandbox')
-  .addArguments('--disable-dev-shm-usage')
-  .addArguments('--window-size=1920,1080')
-  .addArguments('--remote-debugging-port=9222')
-  .addArguments('--disable-blink-features=AutomationControlled');*/
-
-chromeOptions = new chrome.Options()
-    .addArguments('--disable-gpu')
-    .addArguments('--no-sandbox')
-    .addArguments('--disable-dev-shm-usage')
-    .addArguments('--window-size=1920,1080')
-    .addArguments('--enable-logging', '--v=1')
-    .addArguments('--remote-debugging-port=9222');
-
 
 BeforeAll(async () => {
     // Initialize driver only if it's not already initialized
@@ -84,9 +73,9 @@ BeforeAll(async () => {
 
     // Handle the cookies prompt
     console.log('Handling cookies prompt');
-    await takeScreenshot(driver, 'before_failure.png');
+    await takeScreenshot(driver, 'before_cookies.png');
     await helpers.handleCookiesPrompt(driver);
-    await takeScreenshot(driver, 'after_failure.png');
+    await takeScreenshot(driver, 'after_cookies.png');
 });
 
 //Verify API price format
