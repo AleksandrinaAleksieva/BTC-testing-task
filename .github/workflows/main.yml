@@ -29,11 +29,6 @@ jobs:
       run: |
         mkdir -p screenshots
 
-    - name: Set up virtual display
-      run: |
-        sudo apt-get install -y xvfb
-        xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npm run test
-
     - name: Install dependencies for Chrome
       run: |
         sudo apt-get update
@@ -63,12 +58,18 @@ jobs:
         sudo dpkg -i google-chrome-stable_current_amd64.deb
         sudo apt --fix-broken install
 
+    - name: Set up virtual display (Xvfb)
+      run: |
+        sudo apt-get install -y xvfb
+        xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npm run test
+
     - name: Run tests
       run: |
         npm run test
       continue-on-error: true  # This ensures that even if tests fail, the next steps are executed.
 
     - name: Upload test artifacts (screenshots, reports)
+      if: failure()  # Upload artifacts only when the tests fail
       uses: actions/upload-artifact@v3
       with:
         name: test-artifacts
