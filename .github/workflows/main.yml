@@ -24,11 +24,11 @@ jobs:
     - name: Install dependencies
       run: |
         npm install
-        
+
     - name: Set up virtual display
       run: |
         sudo apt-get install -y xvfb
-        xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npm run test
+        xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24"
 
     - name: Install dependencies for Chrome
       run: |
@@ -58,6 +58,10 @@ jobs:
         curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o google-chrome-stable_current_amd64.deb
         sudo dpkg -i google-chrome-stable_current_amd64.deb
         sudo apt --fix-broken install
+        
+    - name: Run tests
+      run: |
+        npm run test
 
     - name: Upload test artifacts (screenshots, reports)
       uses: actions/upload-artifact@v3
@@ -66,7 +70,3 @@ jobs:
         path: |
           reports/
           ci-screenshot.png
-
-    - name: Run tests
-      run: |
-        npm run test
