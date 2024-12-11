@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: Cucumber Tests CI
 
 on:
   push:
@@ -10,52 +10,64 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest # You can change this to macOS or Windows if needed
-    
+    runs-on: ubuntu-latest
+
     steps:
-    # Check out the code from the repository
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
 
-    # Set up Node.js (install Node.js and npm)
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v2
       with:
-        node-version: '23' # Use the version of Node.js that you prefer
+        node-version: '16'
 
-    # Cache npm dependencies to speed up workflow runs
-    - name: Cache npm dependencies
-      uses: actions/cache@v3
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-modules-
-
-    # Install project dependencies
     - name: Install dependencies
-      run: npm install
-
-    # Set up environment variables from .env
-    - name: Set up environment variables
       run: |
-        echo "API_ENDPOINT=${{ secrets.API_ENDPOINT }}" >> $GITHUB_ENV
-        # Add other environment variables here if necessary
+        npm install
 
-    # Run tests
-    - name: Run Tests
-      run: npm run test
-
-    # Optionally, generate Allure report (if you want to save reports)
-    - name: Generate Allure report
+    - name: Install dependencies for Chrome
       run: |
-        allure generate reports/allure-results --clean -o reports/allure-report
-        allure open reports/allure-report
-      continue-on-error: true # Allows the action to continue even if this fails
+        sudo apt-get update
+        sudo apt-get install -y \
+          wget \
+          curl \
+          unzip \
+          xz-utils \
+          libx11-dev \
+          libx11-xcb1 \
+          libxcomposite1 \
+          libxrandr2 \
+          libgdk-pixbuf2.0-0 \
+          libnss3 \
+          libatk-bridge2.0-0 \
+          libatk1.0-0 \
+          libgbm1 \
+          libasound2 \
+          libxss1 \
+          libappindicator3-1 \
+          libsecret-1-0 \
+          fonts-liberation \
+          libappindicator3-1 \
+          libnspr4
+        # Install Google Chrome
+        curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o google-chrome-stable_current_amd64.deb
+        sudo dpkg -i google-chrome-stable_current_amd64.deb
+        sudo apt --fix-broken install
 
-    # Optionally, upload Allure reports as artifacts
-    - name: Upload Allure report
-      uses: actions/upload-artifact@v3
-      with:
-        name: allure-report
-        path: reports/allure-report
+    - name: Install Allure Commandline
+      run: |
+        # Install Allure Commandline
+        curl -o allure.zip https://github.com/allure-framework/allure2/releases/download/2.18.1/allure-2.18.1.tgz
+        unzip allure.zip -d allure
+        sudo mv allure /opt/allure
+        sudo ln -s /opt/allure/bin/allure /usr/local/bin/allure
+        allure --version  # Verify allure installation
+
+    - name: Run tests
+      run: |
+        npm run test
+
+    - name: Generate Allure Report
+      run: |
+        allure generate allure-results --clean -o allure-report
+        allure open allure-report
