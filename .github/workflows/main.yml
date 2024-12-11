@@ -57,8 +57,8 @@ jobs:
     - name: Install Allure Commandline
       run: |
         # Install Allure Commandline
-        curl -o allure.zip https://github.com/allure-framework/allure2/releases/download/2.18.1/allure-2.18.1.tgz
-        unzip allure.zip -d allure
+        curl -o allure.tgz https://github.com/allure-framework/allure2/releases/download/2.18.1/allure-2.18.1.tgz
+        tar -xvzf allure.tgz -C allure
         sudo mv allure /opt/allure
         sudo ln -s /opt/allure/bin/allure /usr/local/bin/allure
         allure --version  # Verify allure installation
