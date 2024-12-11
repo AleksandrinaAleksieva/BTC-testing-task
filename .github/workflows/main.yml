@@ -68,5 +68,5 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: test-artifacts
-        path: screenshots/*  # Adjust this path if necessary
+        path: ./features/step_definitions/screenshots/*   # Adjust this path if necessary
         if-no-files-found: warn  # Prevent failure if no files are found
