@@ -65,11 +65,15 @@ jobs:
         sudo apt-get install -y xvfb
         xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npm run test
 
+    - name: Generate Cucumber HTML Report
+      run: |
+        node generate_report.js
 
     - name: Upload test artifacts (screenshots, reports)
-      if: failure()  # Upload artifacts only when the tests fail
       uses: actions/upload-artifact@v3
       with:
         name: test-artifacts
-        path: ./features/step_definitions/screenshots/*   # Ensure this path matches the actual location of screenshots
+        path: |
+          ./features/step_definitions/screenshots/*  # Adjust this path to match your screenshots directory
+          ./reports/cucumber_report.html             # Upload the HTML report as an artifact
         if-no-files-found: warn  # Prevent failure if no files are found
