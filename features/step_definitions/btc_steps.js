@@ -55,6 +55,7 @@ chromeOptions = new chrome.Options()
     .addArguments('--no-sandbox')
     .addArguments('--disable-dev-shm-usage')
     .addArguments('--window-size=1920,1080')
+    .addArguments('--enable-logging', '--v=1')
     .addArguments('--remote-debugging-port=9222');
 
 
@@ -72,9 +73,16 @@ BeforeAll(async () => {
     console.log(`Loading ${URL}`);
     //The page should be loaded within 1 minute
     await driver.manage().setTimeouts({ implicit: 30000, pageLoad: 120000 });
-    //Handle the cookies prompt
+
+    // Handle the cookies prompt
     console.log('Handling cookies prompt');
+    await driver.takeScreenshot().then((data) => {
+        require('fs').writeFileSync('before-cookies-prompt.png', data, 'base64');
+    });
     await helpers.handleCookiesPrompt(driver);
+    await driver.takeScreenshot().then((data) => {
+        require('fs').writeFileSync('after-cookies-prompt.png', data, 'base64');
+    });
 });
 
 //Verify API price format
