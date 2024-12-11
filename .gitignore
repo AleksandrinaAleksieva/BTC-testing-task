@@ -1,0 +1,12 @@
+# Environment variables
+.env
+
+# Dependencies
+node_modules/
+
+# IDE configuration files
+.vscode/
+
+# Test reports and results
+reports/
+results/
