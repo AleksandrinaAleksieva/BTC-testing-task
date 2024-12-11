@@ -50,11 +50,17 @@ chromeOptions = new chrome.Options()
     .addArguments(automationControlled);
 
 async function takeScreenshot(driver, fileName) {
+    // Ensure the screenshots directory exists
+    const screenshotDir = path.join(__dirname, 'features', 'step_definitions', 'screenshots');
+    if (!fs.existsSync(screenshotDir)) {
+      fs.mkdirSync(screenshotDir, { recursive: true });
+    }
+  
     const screenshot = await driver.takeScreenshot();
-    const screenshotPath = path.join(__dirname, 'screenshots', fileName);
+    const screenshotPath = path.join(screenshotDir, fileName);
     fs.writeFileSync(screenshotPath, screenshot, 'base64');
     console.log(`Screenshot saved to ${screenshotPath}`);
-}
+  }
 
 BeforeAll(async () => {
     // Initialize driver only if it's not already initialized
