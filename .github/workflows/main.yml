@@ -27,7 +27,7 @@ jobs:
 
     - name: Ensure screenshots directory exists
       run: |
-        mkdir -p screenshots
+        mkdir -p features/step_definitions/screenshots
 
     - name: Install dependencies for Chrome
       run: |
@@ -65,11 +65,15 @@ jobs:
         sudo apt-get install -y xvfb
         xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npm run test
 
+    - name: Check if cucumber_report.json exists
+      run: |
+        ls -l reports/cucumber_report.json
+
     - name: Generate Cucumber HTML Report
       run: |
         node generate_report.js
       env:
-        NODE_ENV: production # If necessary, add an environment variable for generating the report
+        NODE_ENV: production
 
     - name: Upload test artifacts (screenshots, reports)
       uses: actions/upload-artifact@v3
