@@ -41,10 +41,14 @@ chromeOptions.addArguments(
   remoteDebugging
 );*/
 
-chromeOptions = new chrome.Options().addArguments('--headless').addArguments('--disable-gpu')
-.addArguments('--no-sandbox')
-.addArguments('--disable-dev-shm-usage')
-.addArguments('--window-size=1920,1080');
+ chromeOptions = new chrome.Options()
+  .addArguments('--headless')
+  .addArguments('--disable-gpu')
+  .addArguments('--no-sandbox')
+  .addArguments('--disable-dev-shm-usage')
+  .addArguments('--window-size=1920,1080')
+  .addArguments('--remote-debugging-port=9222')
+  .addArguments('--disable-blink-features=AutomationControlled');
 
 BeforeAll(async () => {
     // Initialize driver only if it's not already initialized
