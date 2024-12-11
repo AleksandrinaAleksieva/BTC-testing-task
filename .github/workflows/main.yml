@@ -28,7 +28,7 @@ jobs:
     - name: Set up virtual display
       run: |
         sudo apt-get install -y xvfb
-        xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24"
+        xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npm run test
 
     - name: Install dependencies for Chrome
       run: |
@@ -58,7 +58,7 @@ jobs:
         curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o google-chrome-stable_current_amd64.deb
         sudo dpkg -i google-chrome-stable_current_amd64.deb
         sudo apt --fix-broken install
-        
+
     - name: Run tests
       run: |
         npm run test
