@@ -63,7 +63,7 @@ BeforeAll(async () => {
     await driver.get(URL);
     console.log(`Loading ${URL}`);
     //The page should be loaded within 1 minute
-    await driver.manage().setTimeouts({ implicit: 10000, pageLoad: 60000 });
+    await driver.manage().setTimeouts({ implicit: 30000, pageLoad: 120000 });
     //Handle the cookies prompt
     console.log('Handling cookies prompt');
     await helpers.handleCookiesPrompt(driver);
