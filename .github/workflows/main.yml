@@ -21,7 +21,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '16' # Use the version of Node.js that you prefer
+        node-version: '23' # Use the version of Node.js that you prefer
 
     # Cache npm dependencies to speed up workflow runs
     - name: Cache npm dependencies
