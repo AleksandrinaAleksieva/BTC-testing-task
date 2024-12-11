@@ -1,6 +1,8 @@
 const { Given, When, Then, Before, BeforeAll, AfterAll } = require('@cucumber/cucumber');
 const { setDefaultTimeout } = require('@cucumber/cucumber');
 const { Builder } = require('selenium-webdriver');
+const fs = require('fs');
+const path = require('path');
 const chrome = require('selenium-webdriver/chrome');
 const utils = require('../../utils');
 const FinancePage = require('../pages/finance.btc.page');
@@ -32,6 +34,12 @@ let uiPrice;
 let initialPrice;
 let recordedPrices = [];
 
+async function takeScreenshot(driver, fileName) {
+    const screenshot = await driver.takeScreenshot();
+    const screenshotPath = path.join(__dirname, 'screenshots', fileName);
+    fs.writeFileSync(screenshotPath, screenshot, 'base64');
+    console.log(`Screenshot saved to ${screenshotPath}`);
+}
 /*
 chromeOptions = new chrome.Options();
 chromeOptions.addArguments(
@@ -76,13 +84,9 @@ BeforeAll(async () => {
 
     // Handle the cookies prompt
     console.log('Handling cookies prompt');
-    await driver.takeScreenshot().then((data) => {
-        require('fs').writeFileSync('before-cookies-prompt.png', data, 'base64');
-    });
+    await takeScreenshot(driver, 'before_failure.png');
     await helpers.handleCookiesPrompt(driver);
-    await driver.takeScreenshot().then((data) => {
-        require('fs').writeFileSync('after-cookies-prompt.png', data, 'base64');
-    });
+    await takeScreenshot(driver, 'after_failure.png');
 });
 
 //Verify API price format
