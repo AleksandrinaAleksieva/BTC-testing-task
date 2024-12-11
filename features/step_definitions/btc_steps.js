@@ -17,6 +17,10 @@ const API_ENDPOINT = process.env.API_ENDPOINT;
 const URL = 'https://www.google.com/finance/quote/BTC-USD';
 const Chrome = 'chrome';
 const Number = 'number';
+const headless = 'headless';
+const noSandbox = 'no-sandbox';
+const disbleShm = 'disable-dev-shm-usage';
+const remoteDebugging = 'remote-debugging-port=9222';
 
 //Variables
 let driver;
@@ -28,13 +32,19 @@ let uiPrice;
 let initialPrice;
 let recordedPrices = [];
 
+/*
 chromeOptions = new chrome.Options();
 chromeOptions.addArguments(
-  'headless',
-  'no-sandbox',
-  'disable-dev-shm-usage',
-  'remote-debugging-port=9222'
-);
+  headless,
+  noSandbox,
+  disbleShm,
+  remoteDebugging
+);*/
+
+chromeOptions = new chrome.Options().headless().addArguments('--disable-gpu')
+.addArguments('--no-sandbox')
+.addArguments('--disable-dev-shm-usage')
+.addArguments('--window-size=1920,1080');
 
 BeforeAll(async () => {
     // Initialize driver only if it's not already initialized
@@ -43,12 +53,15 @@ BeforeAll(async () => {
         financePage = new FinancePage(driver);
         helpers = new Helpers(driver);
     }
+    console.log('Driver initialized, navigating to the URL');
+
     //Load the Google Finance page
     await driver.get(URL);
     console.log(`Loading ${URL}`);
     //The page should be loaded within 1 minute
     await driver.manage().setTimeouts({ implicit: 10000, pageLoad: 60000 });
     //Handle the cookies prompt
+    console.log('Handling cookies prompt');
     await helpers.handleCookiesPrompt(driver);
 });
 
