@@ -48,13 +48,17 @@ In the project directory, create a `.env` file that contains your API key for th
 ```env
 API_ENDPOINT=https://serpapi.com/search?engine=google_finance&q=BTC-USD&api_key=your_api_key_here
 Important: Never commit your .env file with the actual API key to a public repository. You can add .env to .gitignore to prevent it from being tracked.
+```
 
+```
 .gitignore
 plaintext
 Copy code
 .env
 node_modules/
 Project Setup
+```
+
 
 ## Environment Configuration
 Follow the steps below to set up the project environment:
@@ -90,32 +94,6 @@ NPM Scripts
 The package.json file contains the following test scripts:
 "test": "cucumber-js",
 "smoke": "cucumber-js --profile smoke"
-
-Debug Tests
-To debug the tests, navigate to the "Run and Debug" section of your editor (e.g., VSCode) and create a new Node.js debug configuration. Paste and save the following configuration:
-
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Debug Cucumber Tests",
-      "program": "${workspaceFolder}/node_modules/.bin/cucumber-js",
-      "args": [
-        "--require",
-        "${workspaceFolder}/step_definitions/*.js",
-        "--format",
-        "progress",
-        "${workspaceFolder}/features/*.feature"
-      ],
-      "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "node",
-      "console": "integratedTerminal",
-      "skipFiles": ["<node_internals>/**"]
-    }
-  ]
-}
 
 ## Debugging Configuration
 If you want to debug the Cucumber tests in VSCode, follow the steps below:
