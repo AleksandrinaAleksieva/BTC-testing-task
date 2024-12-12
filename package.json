@@ -15,7 +15,7 @@
   },
   "type": "commonjs",
   "scripts": {
-  "test": "cucumber-js && node generate_report.js",
+  "test": "API_ENDPOINT=$API_ENDPOINT cucumber-js && node generate_report.js",
   "smoke": "cucumber-js --profile smoke && node generate_report.js"
   },
   "devDependencies": {
