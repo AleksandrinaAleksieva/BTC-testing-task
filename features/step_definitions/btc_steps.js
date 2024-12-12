@@ -88,12 +88,6 @@ BeforeAll(async () => {
 //Verify API price format
 Given('I get the current price from the API', async () => {
     //Via Get request extract the current BTC-USD price from the API
-    console.log('Checking API_ENDPOINT environment variable...');
-    if (!process.env.API_ENDPOINT) {
-      console.error('API_ENDPOINT is not defined!');
-    } else {
-      console.log(`API_ENDPOINT is: ${process.env.API_ENDPOINT}`);
-    }
     apiPrice = await utils.fetchBTCPrice(API_ENDPOINT);
     expect(apiPrice).to.be.a(Number);
     expect(apiPrice).to.be.above(10000);

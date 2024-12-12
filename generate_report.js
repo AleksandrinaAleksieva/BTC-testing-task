@@ -6,14 +6,9 @@ const path = require('path');
 const jsonFilePath = path.resolve('./reports/cucumber_report.json');
 const htmlFilePath = path.resolve('./reports/cucumber_report.html');
 
-// Logger to validate paths
-console.log('Validating paths...');
-console.log(`JSON file path: ${jsonFilePath}`);
-console.log(`HTML output path: ${htmlFilePath}`);
-
 if (!fs.existsSync(jsonFilePath)) {
   console.error(`Error: JSON file does not exist at ${jsonFilePath}`);
-  process.exit(1); // Exit with failure
+  process.exit(1);
 }
 
 const options = {
