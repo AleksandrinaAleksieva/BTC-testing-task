@@ -29,7 +29,7 @@ The project's structure is as follows:
 │ └── btc_page.feature # Cucumber feature file for the BTC-USD page tests 
 ├── node_modules/ # Installed npm modules 
 ├── reports/ # Test results and reports 
-│ └── allure-results/ # Allure results 
+│ └── cucumber-report.json/ # Cucumeber test results 
 ├── .env # Environment configuration file (DO NOT COMMIT API keys)
 ├── .gitignore # Git ignore file for sensitive data 
 ├── constants.js.js # Commonly used static variables 
@@ -62,8 +62,8 @@ Follow the steps below to set up the project environment:
 ### 1 Clone the repository:
 bash
 Copy code
-git clone <your-repository-url>
-cd nexo
+git clone repository
+cd btc-testing-task
 
 ### 2 Install dependencies
 Ensure that you have Node.js and npm installed. Then run:
@@ -73,14 +73,49 @@ This will install all required dependencies as defined in package.json.
 
 ### 3 Set up Google API Key
 Sign up for a SerpAPI account at SerpAPI to get your API key.
-
 After receiving your API key, add it to the .env file, as described in the previous section.
+Note: For running the test in the CI, you don't need to set your own API_ENDPOINT
 
 ### 4 Run Tests
-After setting up the environment, you can run the tests using:
+Run Tests
+To run the tests, use the following commands:
 
-npx cucumber-js
-This will execute the Cucumber feature tests defined in the features/*.feature file.
+Smoke Tests:
+
+npm run smoke
+All Tests:
+npm run test
+NPM Scripts
+
+The package.json file contains the following test scripts:
+"test": "cucumber-js",
+"smoke": "cucumber-js --profile smoke"
+
+Debug Tests
+To debug the tests, navigate to the "Run and Debug" section of your editor (e.g., VSCode) and create a new Node.js debug configuration. Paste and save the following configuration:
+
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Cucumber Tests",
+      "program": "${workspaceFolder}/node_modules/.bin/cucumber-js",
+      "args": [
+        "--require",
+        "${workspaceFolder}/step_definitions/*.js",
+        "--format",
+        "progress",
+        "${workspaceFolder}/features/*.feature"
+      ],
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "node",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}
 
 ## Debugging Configuration
 If you want to debug the Cucumber tests in VSCode, follow the steps below:
@@ -126,7 +161,6 @@ Missing .env file: If the .env file is missing, make sure to create it as per th
 API Key Errors: Double-check that the API key is correctly set in the .env file.
 
 ## Default Timeout
-
 The default timeout is set to 320000 ms to accommodate the long waiting intervals required by the tests.
 
 ## Local Test Execution
@@ -144,53 +178,11 @@ Run the following command in your terminal to install all the required dependenc
 
 npm install
 Chromedriver Compatibility
-Ensure that the chromedriver.exe version in the drivers/ folder is compatible with your browser. Replace it with the correct version if needed.
+Ensure that the chromedriver.exe version in the drivers/ folder is compatible with your browser.
+Replace it with the correct version if needed.
 
 Install Cucumber Plugin for VS Code (Optional)
 You can install the Cucumber plugin for VS Code to enable syntax highlighting and better integration, but it's not mandatory.
 
-Run Tests
-To run the tests, use the following commands:
+Remote Execution CI - supported in github with manual interactions.
 
-Smoke Tests:
-
-npm run smoke
-All Tests:
-npm run test
-NPM Scripts
-
-The package.json file contains the following test scripts:
-"test": "cucumber-js",
-"smoke": "cucumber-js --profile smoke"
-
-Debug Tests
-To debug the tests, navigate to the "Run and Debug" section of your editor (e.g., VSCode) and create a new Node.js debug configuration. Paste and save the following configuration:
-
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Debug Cucumber Tests",
-      "program": "${workspaceFolder}/node_modules/.bin/cucumber-js",
-      "args": [
-        "--require",
-        "${workspaceFolder}/step_definitions/*.js",
-        "--format",
-        "progress",
-        "${workspaceFolder}/features/*.feature"
-      ],
-      "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "node",
-      "console": "integratedTerminal",
-      "skipFiles": ["<node_internals>/**"]
-    }
-  ]
-}
-
-Remote Execution - CI
-For remote execution on a Continuous Integration (CI) system, you'll need to follow these steps:
-
-Generate an API key (as described above).
-Set up your CI pipeline with the necessary environment variables and configurations to run the tests remotely.
