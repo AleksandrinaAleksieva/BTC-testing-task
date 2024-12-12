@@ -67,7 +67,11 @@ jobs:
 
     - name: Check if cucumber_report.json exists
       run: |
-        ls -l reports/cucumber_report.json
+        ls -l ./reports/cucumber_report.json
+
+    - name: Check if generate_report.js exists
+      run: |
+        ls -l ./generate_report.js || (echo "Error: generate_report.js not found!" && exit 1)
 
     - name: Generate Cucumber HTML Report
       run: |
