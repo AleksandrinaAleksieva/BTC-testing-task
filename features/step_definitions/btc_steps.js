@@ -47,7 +47,7 @@ chromeOptions = new chrome.Options()
     .addArguments(disbleShm)
     .addArguments(windowSize)
     .addArguments(logging)
-    .addArguments(remoteDebugging)
+    .addArguments(remoteDebugging) //Comment out for local execution //TODO implement CI condition
     .addArguments(automationControlled);
 
 //Helper function for debugging
